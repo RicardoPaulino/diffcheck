@@ -1,0 +1,6 @@
+{
+  "name": "Comparador de Textos",
+  "description": "Componente minimalista e moderno para visualização em highlight das diferenças entre dois textos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
