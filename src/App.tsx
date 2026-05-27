@@ -22,7 +22,8 @@ import {
   FileJson,
   Code,
   Sun,
-  Moon
+  Moon,
+  Lock
 } from 'lucide-react';
 import { SAMPLES } from './data/samples';
 import { DiffMode, ViewLayout, DiffStats } from './types';
@@ -30,6 +31,7 @@ import { getDiff, calculateStats } from './utils/diffUtils';
 import StatsBanner from './components/StatsBanner';
 import DiffViewer from './components/DiffViewer';
 import JSONFormatter from './components/JSONFormatter';
+import JWTDebugger from './components/JWTDebugger';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import {
   SidebarProvider,
@@ -47,7 +49,7 @@ import {
 } from '@/components/ui/sidebar';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'diff' | 'json'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'diff' | 'json' | 'jwt'>('home');
 
   // Theme support state (light or dark)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -210,6 +212,25 @@ export default function App() {
                         </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
+
+                    <SidebarMenuItem className="mt-1 list-none">
+                      <SidebarMenuButton
+                        onClick={() => setActiveTab('jwt')}
+                        isActive={activeTab === 'jwt'}
+                        className={`w-full flex items-center gap-3 px-3.5 py-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-left ${
+                          activeTab === 'jwt'
+                            ? 'bg-indigo-600 text-white shadow-xs hover:bg-indigo-600 hover:text-white'
+                            : 'text-slate-650 dark:text-slate-350 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-855'
+                        }`}
+                        id="sidebar-jwt-btn"
+                      >
+                        <Lock className="w-4.5 h-4.5 shrink-0" />
+                        <div>
+                          <span className="block font-bold">Depurador JWT</span>
+                          <span className="text-[9.5px] opacity-75 block font-normal">Decodifique e certifique tokens</span>
+                        </div>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
@@ -241,7 +262,7 @@ export default function App() {
                     <Scale className="w-3.5 h-3.5 text-white" />
                   </div>
                   <span className="font-bold text-sm tracking-tight text-slate-800 dark:text-slate-205 md:block hidden animate-fade-in">
-                    {activeTab === 'home' ? 'Início / Painel de Utilidades' : activeTab === 'diff' ? 'Comparador Analítico de Textos' : 'Leitor e Formatador JSON'}
+                    {activeTab === 'home' ? 'Início / Painel de Utilidades' : activeTab === 'diff' ? 'Comparador Analítico de Textos' : activeTab === 'json' ? 'Leitor e Formatador JSON' : 'Depurador de Tokens JWT'}
                   </span>
                   <span className="font-bold text-sm tracking-tight text-slate-850 dark:text-slate-100 md:hidden block">
                     DiffCheck
@@ -270,7 +291,7 @@ export default function App() {
                 </button>
 
                 <span className="text-[10px] bg-indigo-50 border border-indigo-100 dark:bg-indigo-950/40 dark:border-indigo-900/60 text-indigo-750 dark:text-indigo-300 font-bold px-2.5 py-0.5 rounded uppercase tracking-wider select-none animate-pulse">
-                  {activeTab === 'home' ? 'Home' : activeTab === 'diff' ? 'Texto' : 'JSON'}
+                  {activeTab === 'home' ? 'Home' : activeTab === 'diff' ? 'Texto' : activeTab === 'json' ? 'JSON' : 'JWT'}
                 </span>
               </div>
             </header>
@@ -304,11 +325,11 @@ export default function App() {
                 </div>
 
                 {/* Main Cards Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Comparador de Texto Card */}
                   <div 
                     onClick={() => setActiveTab('diff')}
-                    className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-900/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                    className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-900/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
                   >
                     <div className="space-y-4">
                       <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100/50 dark:border-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform duration-300">
@@ -330,21 +351,21 @@ export default function App() {
                         <ul className="space-y-1.5">
                           <li className="flex items-center gap-2 text-xs text-slate-650 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
-                            Comparação de palavras, caracteres ou linhas inteiras
+                            Comparação de palavras, caracteres ou linhas
                           </li>
                           <li className="flex items-center gap-2 text-xs text-slate-650 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
-                            Visualização Lado a Lado (Split) ou Unificada (Unified)
+                            Visualização Lado a Lado (Split) ou Unificada
                           </li>
                           <li className="flex items-center gap-2 text-xs text-slate-650 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
-                            Estatísticas detalhadas de similaridade e contagem em real-time
+                            Estatísticas detalhadas em tempo real
                           </li>
                         </ul>
                       </div>
                     </div>
 
-                    <button className="mt-6 w-full py-2.5 px-4 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                    <button className="mt-6 w-full py-2.5 px-4 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm">
                       Acessar Comparador
                       <ArrowLeftRight className="w-3.5 h-3.5" />
                     </button>
@@ -353,7 +374,7 @@ export default function App() {
                   {/* Formatador JSON Card */}
                   <div 
                     onClick={() => setActiveTab('json')}
-                    className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-900/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                    className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-900/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
                   >
                     <div className="space-y-4">
                       <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100/50 dark:border-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform duration-300">
@@ -375,23 +396,68 @@ export default function App() {
                         <ul className="space-y-1.5">
                           <li className="flex items-center gap-2 text-xs text-slate-650 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                            Árvore dinâmica e interativa com nós expansíveis
+                            Árvore dinâmica e interativa expansível
                           </li>
                           <li className="flex items-center gap-2 text-xs text-slate-650 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                            Análise de sintaxe em tempo real com rastreamento de erros
+                            Análise de sintaxe em tempo real com erros
                           </li>
                           <li className="flex items-center gap-2 text-xs text-slate-655 dark:text-slate-350">
                             <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                            Formatador rápido e minificação instantânea de alta performance
+                            Formatador rápido e minificação instantânea
                           </li>
                         </ul>
                       </div>
                     </div>
 
-                    <button className="mt-6 w-full py-2.5 px-4 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                    <button className="mt-6 w-full py-2.5 px-4 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm">
                       Acessar Formatador
                       <FileJson className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Depurador JWT Card */}
+                  <div 
+                    onClick={() => setActiveTab('jwt')}
+                    className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-900/60 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                  >
+                    <div className="space-y-4">
+                      <div className="w-12 h-12 rounded-xl bg-violet-50 dark:bg-violet-955/40 border border-violet-100/50 dark:border-violet-900/40 flex items-center justify-center text-violet-605 dark:text-violet-400 group-hover:scale-105 transition-transform duration-300">
+                        <Lock className="w-5 h-5" />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-bold text-slate-850 dark:text-white flex items-center gap-2">
+                          Depurador JWT
+                          <span className="text-[10px] uppercase font-bold tracking-wider font-mono bg-violet-50 dark:bg-violet-955/40 text-violet-650 dark:text-violet-400 px-2 py-0.5 rounded border border-violet-100/40 dark:border-violet-900/30">Novo</span>
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                          Decodifique, analise e assine tokens JWT criptografados localmente. Perfeito para verificar tempos de expiração ou permissões em APIs.
+                        </p>
+                      </div>
+
+                      <div className="space-y-2.5 pt-2">
+                        <span className="text-[10px] text-slate-400 dark:text-slate-555 font-bold uppercase tracking-wider block">Recursos Principais</span>
+                        <ul className="space-y-1.5">
+                          <li className="flex items-center gap-2 text-xs text-slate-655 dark:text-slate-350">
+                            <span className="w-1.5 h-1.5 bg-violet-550 rounded-full" />
+                            Decodificação colorida de Header e Payload
+                          </li>
+                          <li className="flex items-center gap-2 text-xs text-slate-655 dark:text-slate-350">
+                            <span className="w-1.5 h-1.5 bg-violet-550 rounded-full" />
+                            Geração e assinatura HS256 em tempo real
+                          </li>
+                          <li className="flex items-center gap-2 text-xs text-slate-655 dark:text-slate-350">
+                            <span className="w-1.5 h-1.5 bg-violet-550 rounded-full" />
+                            Leitura e destaque de metadados temporários (claims)
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <button className="mt-6 w-full py-2.5 px-4 text-xs font-bold text-white bg-indigo-650 hover:bg-indigo-750 dark:bg-indigo-600 dark:hover:bg-indigo-700 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm">
+                      Acessar Depurador
+                      <Code className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -719,10 +785,15 @@ export default function App() {
                   )}
                 </section>
               </div>
-            ) : (
+            ) : activeTab === 'json' ? (
               /* ==================== INTERFACE FORMATADOR DE JSON ==================== */
               <div className="animate-fade-in">
                 <JSONFormatter />
+              </div>
+            ) : (
+              /* ==================== INTERFACE DEPURADOR DE JWT ==================== */
+              <div className="animate-fade-in">
+                <JWTDebugger />
               </div>
             )}
 
