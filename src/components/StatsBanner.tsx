@@ -28,18 +28,18 @@ export default function StatsBanner({ stats }: StatsBannerProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between"
+        className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between transition-colors"
         id="stats-similarity-card"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Similaridade</span>
+          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Similaridade</span>
           <Percent className="w-3.5 h-3.5 text-slate-400" />
         </div>
         <div className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-bold font-mono tracking-tight text-slate-900">{similarityPercentage}%</span>
-          <span className="text-[10px] text-slate-500 font-semibold uppercase">compatível</span>
+          <span className="text-2xl font-bold font-mono tracking-tight text-slate-900 dark:text-slate-100">{similarityPercentage}%</span>
+          <span className="text-[10px] text-slate-500 dark:text-slate-405 font-semibold uppercase">compatível</span>
         </div>
-        <div className="mt-2.5 w-full bg-slate-100 rounded-full h-1 overflow-hidden">
+        <div className="mt-2.5 w-full bg-slate-100 dark:bg-slate-950 rounded-full h-1 overflow-hidden">
           <motion.div 
             className={`h-full ${getPercentageBarColor(similarityPercentage)}`}
             initial={{ width: 0 }}
@@ -54,16 +54,16 @@ export default function StatsBanner({ stats }: StatsBannerProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.05 }}
-        className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between"
+        className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between transition-colors"
         id="stats-additions-card"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Adições</span>
+          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Adições</span>
           <PlusCircle className="w-3.5 h-3.5 text-emerald-500" />
         </div>
         <div>
-          <span className="text-2xl font-bold font-mono tracking-tight text-emerald-600">+{additions}</span>
-          <p className="text-[10px] text-slate-500 font-medium">caracteres inseridos</p>
+          <span className="text-2xl font-bold font-mono tracking-tight text-emerald-600 dark:text-emerald-400">+{additions}</span>
+          <p className="text-[10px] text-slate-500 dark:text-slate-405 font-medium">caracteres inseridos</p>
         </div>
       </motion.div>
 
@@ -72,16 +72,16 @@ export default function StatsBanner({ stats }: StatsBannerProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between"
+        className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between transition-colors"
         id="stats-deletions-card"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Remoções</span>
-          <MinusCircle className="w-3.5 h-3.5 text-red-500" />
+          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Remoções</span>
+          <MinusCircle className="w-3.5 h-3.5 text-red-500 animate-pulse" />
         </div>
         <div>
-          <span className="text-2xl font-bold font-mono tracking-tight text-red-600">-{deletions}</span>
-          <p className="text-[10px] text-slate-500 font-medium">caracteres removidos</p>
+          <span className="text-2xl font-bold font-mono tracking-tight text-red-600 dark:text-red-400">-{deletions}</span>
+          <p className="text-[10px] text-slate-500 dark:text-slate-405 font-medium">caracteres removidos</p>
         </div>
       </motion.div>
 
@@ -90,34 +90,34 @@ export default function StatsBanner({ stats }: StatsBannerProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.15 }}
-        className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between"
+        className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between transition-colors"
         id="stats-words-card"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Extensão</span>
-          <span className="text-[10px] text-slate-400 font-bold font-mono">A → B</span>
+          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Extensão</span>
+          <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold font-mono">A → B</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div>
-            <div className="text-base font-bold text-slate-800 font-mono leading-none">{totalWordsA}</div>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">Palavras A</p>
+            <div className="text-base font-bold text-slate-800 dark:text-slate-200 font-mono leading-none">{totalWordsA}</div>
+            <p className="text-[8px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Palavras A</p>
           </div>
           <ArrowRight className="w-3 text-slate-400" />
           <div>
-            <div className="text-base font-bold text-slate-800 font-mono leading-none">{totalWordsB}</div>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">Palavras B</p>
+            <div className="text-base font-bold text-slate-800 dark:text-slate-200 font-mono leading-none">{totalWordsB}</div>
+            <p className="text-[8px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Palavras B</p>
           </div>
         </div>
-        <div className="text-[10px] text-slate-500 mt-1.5 truncate flex items-center gap-1">
+        <div className="text-[10px] text-slate-550 dark:text-slate-400 mt-1.5 truncate flex items-center gap-1">
           {similarityPercentage === 100 ? (
             <>
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-              <span className="text-emerald-700 font-bold uppercase tracking-wider text-[9px]">Textos Idênticos</span>
+              <span className="text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wider text-[9px]">Textos Idênticos</span>
             </>
           ) : (
             <>
               <Sparkles className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-              <span className="uppercase tracking-wider font-bold text-[9px] text-indigo-700">Diferenças Analisadas</span>
+              <span className="uppercase tracking-wider font-bold text-[9px] text-indigo-705 dark:text-indigo-400">Diferenças Analisadas</span>
             </>
           )}
         </div>
